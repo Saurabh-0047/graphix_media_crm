@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserDesignationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProjectController;
 
 Route::middleware(['redirect-if-authenticated'])->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -23,6 +24,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('admin/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
     Route::put('admin/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
     Route::get('admin/users/{id}/toggle-status', [UserController::class, 'toggleStatus'])->name('admin.users.toggleStatus');
+    // ============  User Handler Ends =========
+
 
     // ============  Designations Handler =========
     Route::get('admin/user_designation', [UserDesignationController::class, 'index'])->name('admin.user_designation');
@@ -30,6 +33,10 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('admin/user_designation/{id}/edit', [UserDesignationController::class, 'edit'])->name('admin.user_designation.edit');
     Route::put('admin/user_designation/{id}', [UserDesignationController::class, 'update'])->name('admin.user_designation.update');
     Route::get('admin/user_designation/{id}/toggle-status', [UserDesignationController::class, 'toggleStatus'])->name('admin.user_designation.toggleStatus');
+    // ============  Designations Handler Ends =========
+
+    // ============  Projects Handler ========= 
+    Route::get('admin/projects', [ProjectController::class, 'index'])->name('admin.projects');
 
 });
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,10 +16,15 @@ class ProjectModel extends Model
         'contact_no',
         'email_id',
         'address',
-        'webiste',
+        'website',
         'packages',
         'remarks',
         'sold_by_id',
-        'sold_by_name'
+        'assigned_to',
+    ];
+
+    protected $casts = [            
+        'packages' => 'array',
+        'assigned_to' => 'array',
     ];
 }

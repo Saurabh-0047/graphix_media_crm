@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserDesignationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ServiceController;
 
 Route::middleware(['redirect-if-authenticated'])->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -35,9 +36,19 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('admin/user_designation/{id}/toggle-status', [UserDesignationController::class, 'toggleStatus'])->name('admin.user_designation.toggleStatus');
     // ============  Designations Handler Ends =========
 
+    
+    // ============  Services Handler =========
+    Route::get('admin/project_services', [ServiceController::class, 'index'])->name('admin.project_services');
+    Route::post('admin/project_services', [ServiceController::class, 'submit_data'])->name('admin.project_services.post');
+    Route::get('admin/project_services/{id}/edit', [ServiceController::class, 'edit'])->name('admin.project_services.edit');
+    Route::put('admin/project_services/{id}', [ServiceController::class, 'update'])->name('admin.project_services.update');
+    Route::get('admin/project_services/{id}/toggle-status', [ServiceController::class, 'toggleStatus'])->name('admin.project_services.toggleStatus');
+    // ============  Services Handler Ends =========
+
     // ============  Projects Handler ========= 
     Route::get('admin/projects', [ProjectController::class, 'index'])->name('admin.projects');
-
+    Route::get('admin/add_projects', [ProjectController::class, 'add_projects'])->name('admin.add_projects');
+    Route::post('admin/add_projects', [ProjectController::class, 'save_project'])->name('admin.add_project.post');
 });
 
     // ============  Admin Panel End  =========

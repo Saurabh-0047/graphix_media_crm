@@ -29,6 +29,9 @@
                             </span>
                         </a>          
                         <ul class="treeview-menu">          
+                        <li><a href="{{ url('admin/project_services') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>All Services</a></li>
+
+                        <li><a href="{{ url('admin/add_projects') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Add Projects</a></li>
                         <li><a href="{{ url('admin/projects') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>All Projects</a></li>    
                         <li><a href="{{ url('admin/users') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Users</a></li>
                             <li><a href="{{ url('admin/table') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Table</a></li>

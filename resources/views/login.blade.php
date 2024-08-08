@@ -71,3 +71,14 @@
     <script src="{{ asset('src/js/vendors.min.js') }}"></script>
     <script src="{{ asset('src/js/pages/chat-popup.js') }}"></script>
     <script src="{{ asset('assets/icons/feather-icons/feather.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            var currentDateTime = new Date();
+            var dateString = currentDateTime.toDateString();
+            var timeString = currentDateTime.toTimeString().split(' ')[0];
+            $('#datetime').val(dateString + ' ' + timeString);
+            particlesJS.load('particles-js', 'particles-config.json', function() {
+                console.log('particles.js loaded - callback');
+            });
+        });
+    </script>

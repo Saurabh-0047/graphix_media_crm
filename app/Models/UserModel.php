@@ -24,4 +24,6 @@ class UserModel extends Model
     {
         return $this->belongsTo(UserDesignationModel::class, 'designation_id', 'id');
     }
+
+    
 }

@@ -57,4 +57,5 @@ class ProjectController extends Controller
 
         return redirect()->route('admin.add_project.post')->with('success', 'Project added successfully!');
     }
+
 }

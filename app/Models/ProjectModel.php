@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\UserModel;
 
 class ProjectModel extends Model
 {
@@ -23,8 +24,19 @@ class ProjectModel extends Model
         'assigned_to',
     ];
 
-    protected $casts = [            
+    protected $casts = [
         'packages' => 'array',
         'assigned_to' => 'array',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(UserModel::class, 'sold_by_id', 'id');
+    }
+
+    public function getAssignedUsersAttribute()
+    {
+        $userIds = explode(',', $this->attributes['assigned_to']);
+        return UserModel::whereIn('id', $userIds)->get();
+    }
 }

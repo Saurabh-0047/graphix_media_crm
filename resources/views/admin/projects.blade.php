@@ -15,12 +15,11 @@
             </div>
             <section class="content">
                 <div class="row">
-                    
+
                     <div class="box">
                         <div class="box-header with-border">
                             <h4 class="box-title">All Projects</h4>
                         </div>
-
 
                         <div class="table-responsive">
                             <table id="example" class="table text-fade table-bordered table-hover display nowrap margin-top-10 w-p100">
@@ -28,6 +27,7 @@
                                     <tr class="text-dark">
                                         <th>S.NO</th>
                                         <th>Business Name</th>
+                                        <th>Assigned To</th>
                                         <th>Client Name</th>
                                         <th>Contact Number</th>
                                         <th>Email Id</th>
@@ -43,15 +43,22 @@
                                     @foreach ($projects as $project)
                                     <tr>
                                         <td>{{ $i }}</td>
-                                        <td>Business Name</td>
-                                        <td>Client Name</td>
-                                        <td>Contact Number</td>
-                                        <td>Email Id</td>
-                                        <td>Address</td>
-                                        <td>Website</td>
-                                        <td>Packages</td>
-                                        <td>Remarks</td>
-                                        <td>Sold By</td>
+                                        <td>{{ $project->business_name }}</td>
+                                        <td>
+                                      
+                                            @foreach ($project->assigned_users as $user)
+                                                <span>{{ $user->id }}</span>
+                                            @endforeach
+                                        </td>
+                                        <td>{{ $project->client_name }}</td>
+                                        <td>{{ $project->contact_no }}</td>
+                                        <td>{{ $project->email_id }}</td>
+                                        <td>{{ $project->address }}</td>
+                                        <td>{{ $project->website }}</td>
+                                        <td>{{ $project->packages }}</td>
+                                        <td>{{ $project->remarks }}</td>
+                                        <td>{{ $project->user->user_name ?? 'N/A' }}</td>
+                                        
                                     </tr>
                                     @php $i++; @endphp
                                     @endforeach

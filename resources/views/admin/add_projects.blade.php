@@ -47,7 +47,7 @@
                                     </div>
                                     <hr>
 
-                                   
+
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label class="form-label">Select Services:</label><br>
@@ -56,12 +56,23 @@
                                                 <div class="row">
                                                     @foreach ($services as $service)
                                                     <div class="col-md-3">
-                                                        <input type="checkbox" id="checkbox_{{$service->id}}" name="packages[]" class="chk-col-primary" value="{{$service->service}}" />
+                                                        @php
+                                                        // Get the previously submitted values for the checkboxes
+                                                        $checkedValues = old('packages', []);
+                                                        // Check if the current service should be checked
+                                                        $isChecked = in_array($service->service, $checkedValues);
+                                                        @endphp
+                                                        <input type="checkbox" id="checkbox_{{$service->id}}" name="packages[]" class="chk-col-primary" value="{{$service->service}}" {{ $isChecked ? 'checked' : '' }} />
                                                         <label for="checkbox_{{$service->id}}" class="label_text">{{$service->service}}</label>
                                                     </div>
                                                     @endforeach
                                                 </div>
+                                                @if ($errors->has('packages'))
+                                                <span class="text-danger">{{ $errors->first('packages') }}</span>
+                                                @endif
                                             </div>
+
+
                                         </div>
                                     </div>
                                     <hr>
@@ -119,19 +130,34 @@
                                                 <option value="{{ $user->id }}" {{ old('sold_by_id') == $user->id ? 'selected' : '' }}>{{ $user->user_name }}</option>
                                                 @endforeach
                                             </select>
+                                            @if ($errors->has('sold_by_id'))
+                                            <span class="text-danger">{{ $errors->first('sold_by_id') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="form-label">Assigned To</label>
                                             @foreach ($users as $user)
-                                                    <div class="col-md-3">
-                                                        <input type="checkbox" id="assigned_{{$user->id}}" name="assigned_to[]" class="chk-col-primary" value="{{$user->id}}" />
-                                                        <label for="assigned_{{$user->id}}" class="label_text">{{$user->user_name}}</label>
-                                                    </div>
-                                                    @endforeach
+                                            @if ($user->designation_id != 8)
+                                            <div class="col-md-3">
+                                                @php
+                                                // Get the previously submitted values for the checkboxes
+                                                $assignedToValues = old('assigned_to', []);
+                                                // Check if the current user should be checked
+                                                $isChecked = in_array($user->id, $assignedToValues);
+                                                @endphp
+                                                <input type="checkbox" id="assigned_{{$user->id}}" name="assigned_to[]" class="chk-col-primary" value="{{$user->id}}" {{ $isChecked ? 'checked' : '' }} />
+                                                <label for="assigned_{{$user->id}}" class="label_text">{{$user->user_name}}</label>
+                                            </div>
+                                            @endif
+                                            @endforeach
+                                            @if ($errors->has('assigned_to'))
+                                            <span class="text-danger">{{ $errors->first('assigned_to') }}</span>
+                                            @endif
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                     </div>
@@ -141,7 +167,7 @@
                     </div>
                     </form>
                 </div>
-            </div>
+        </div>
         </section>
     </div>
     </div>

@@ -66,7 +66,13 @@
                                         <td>{{ $i }}</td>
                                         <td>{{ $designation->designation }}</td>
                                         <td>
-                                            
+                                        <a href="{{ route('admin.user_designation.edit', $designation->id) }}" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </a>&nbsp;&nbsp;&nbsp;
+                                            <a href="{{ route('admin.users.toggleStatus', $designation->id) }}" class="btn {{ $designation->status == 1 ? 'btn-danger' : 'btn-success' }} btn-sm">
+                                                <i class="fas {{ $designation->status == 1 ? 'fa-toggle-off' : 'fa-toggle-on' }}"></i>
+                                                {{ $designation->status == 1 ? 'Deactivate' : 'Activate' }}
+                                            </a>
                                         </td>
                                     </tr>
                                     @php $i++; @endphp

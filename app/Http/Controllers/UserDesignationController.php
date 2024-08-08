@@ -22,4 +22,25 @@ class UserDesignationController extends Controller
         UserDesignationModel::create($data);
         return redirect()->route('admin.user_designation')->with('success', 'Designation added successfully!');
     }
+
+    public function edit($id)
+    {
+        $designations = UserDesignationModel::findOrFail($id);
+
+        return view('admin.user_designation_edit', compact('designations'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'designation' => 'required|string|max:255',
+        ]);
+
+        $user_deisgnation = UserDesignationModel::findOrFail($id);
+        $user_deisgnation->update([
+            'designation' => $request->input('designation'),
+        ]);
+
+        return redirect()->route('admin.user_designation')->with('success', 'Designation updated successfully.');
+    }
 }

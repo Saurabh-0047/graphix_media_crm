@@ -26,6 +26,9 @@ Route::middleware(['auth:admin', 'prevent-back-history'])->group(function () {
     Route::get('admin/users/{id}/toggle-status', [UserController::class, 'toggleStatus'])->name('admin.users.toggleStatus');
 
 
+    Route::get('admin/user_designation/{id}/edit', [UserDesignationController::class, 'edit'])->name('admin.user_designation.edit');
+    Route::put('admin/user_designation/{id}', [UserDesignationController::class, 'update'])->name('admin.user_designation.update');
+
 });
 
 Route::middleware(['auth:user', 'prevent-back-history'])->group(function () {

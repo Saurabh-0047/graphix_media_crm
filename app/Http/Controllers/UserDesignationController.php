@@ -43,4 +43,13 @@ class UserDesignationController extends Controller
 
         return redirect()->route('admin.user_designation')->with('success', 'Designation updated successfully.');
     }
+
+    public function toggleStatus($id)
+{
+    $user_designation = UserDesignationModel::findOrFail($id);
+    $user_designation->status = $user_designation->status == 1 ? 0 : 1;
+    $user_designation->save();
+    return redirect()->route('admin.user_designation')->with('success', 'Designation status updated successfully.');
+}
+
 }

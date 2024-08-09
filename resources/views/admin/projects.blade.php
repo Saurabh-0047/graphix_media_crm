@@ -34,8 +34,9 @@
                                         <th>Address</th>
                                         <th>Website</th>
                                         <th>Packages</th>
-                                        <th>Remarks</th>
                                         <th>Sold By</th>
+                                        <th>Added On</th>
+                                        <th>Details</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -48,7 +49,7 @@
                                             @foreach ($project->assigned_users as $key => $user)
                                             <span>{{ $user->user_name }}</span>
                                             @if (!$loop->last)
-                                            , <!-- Add a comma if it's not the last user -->
+                                            ,
                                             @endif
                                             @endforeach
                                         </td>
@@ -60,8 +61,12 @@
                                         <td>{{ $project->address }}</td>
                                         <td>{{ $project->website }}</td>
                                         <td>{{ $project->packages }}</td>
-                                        <td>{{ $project->remarks }}</td>
                                         <td>{{ $project->user->user_name ?? 'N/A' }}</td>
+                                        <td>{{ $project->created_at}}</td>
+                                        
+                                        <td><a href="{{ route('admin.project_details', $project->id) }}" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </a></td>
 
                                     </tr>
                                     @php $i++; @endphp

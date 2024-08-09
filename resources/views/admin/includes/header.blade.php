@@ -1,5 +1,23 @@
 <body class="hold-transition  sidebar-mini theme-primary fixed">
-	<div class="wrapper">
+<style>
+.notification-badge {
+    position: absolute;
+    top: 2px;
+    right: -10px;
+    height: 28px;
+    width: 28px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 7px 5px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+    min-width: 20px;
+    z-index: 1;
+}
+</style>
+<div class="wrapper">
 		<header class="main-header">
 			<div class="d-flex align-items-center logo-box justify-content-start">
 				<a href="{{ url('admin/dashboard') }}" class="logo"></a>
@@ -24,6 +42,12 @@
 									<span class="switch-on" onclick="darktolight('dark')" ><i data-feather="moon"></i></span>
 									<span class="switch-off" onclick="darktolight('light')" ><i data-feather="sun"></i></span>
 								</span>
+							</label>
+							<label class="switch" style="margin-top: 26%;">
+								<span class="" >
+									<span ><i data-feather="bell"></i></span>
+								</span>
+								<span class="notification-badge">99+</span>
 							</label>
 						</li>
 

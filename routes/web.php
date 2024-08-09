@@ -49,6 +49,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('admin/projects', [ProjectController::class, 'index'])->name('admin.projects');
     Route::get('admin/add_projects', [ProjectController::class, 'add_projects'])->name('admin.add_projects');
     Route::post('admin/add_projects', [ProjectController::class, 'save_project'])->name('admin.add_project.post');
+    Route::get('admin/project_details/{id}', [ProjectController::class, 'project_details'])->name('admin.project_details');
+    
 });
 
     // ============  Admin Panel End  =========

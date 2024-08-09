@@ -206,19 +206,17 @@
 
                                 <div class="messages">
                                     @foreach($project_messages as $message)
-                                    <!-- Check if the message sender is the logged-in user -->
                                     <div class="message {{ Auth::user()->user_id == $message->sent_by_user_id ? 'user' : 'other' }}">
                                         <div class="message-content">
                                             <div class="sender-info">
-                                                <!-- Display sender's name based on user_id -->
-                                                {{ $message->sent_by_user_id == Auth::user()->id ? 'You' : $message->sender_name }}
+                                                <!-- Safely display sender's name -->
+                                                {{ $message->sent_by_user_id == Auth::user()->user_id ? 'You' : $message->sender_name }}
                                             </div>
                                             {{ $message->message }}
                                             <div class="time-info">{{ $message->created_at->format('H:i A') }}</div>
                                         </div>
                                     </div>
                                     @endforeach
-
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Type a message..." id="message-input">
                                         <div class="input-right-group">

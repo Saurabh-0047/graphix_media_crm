@@ -25,5 +25,12 @@ class UserModel extends Model
         return $this->belongsTo(UserDesignationModel::class, 'designation_id', 'id');
     }
 
+    // Message.php (Model)
+public function user()
+{
+    return $this->belongsTo(User::class, 'sent_by_user_id');
+}
+
+
     
 }

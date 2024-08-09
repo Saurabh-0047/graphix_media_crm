@@ -81,14 +81,18 @@ class ProjectController extends Controller
     }
     
 
-    public function project_details($id){
+    public function project_details($id)
+    {
         $project_details = ProjectModel::findOrFail($id);
-        $project_messages = ProjectMessageModel::where('project_id', $id)->get();
-    
-    // Return a view with both project details and messages
-    return view('admin.project_details', compact('project_details', 'project_messages'));
         
+        // Eager load the user relationship to avoid N+1 query problem
+        $project_messages = ProjectMessageModel::with('user')
+        ->where('project_id', $id)
+        ->get();        
+        // Return a view with both project details and messages
+        return view('admin.project_details', compact('project_details', 'project_messages'));
     }
+    
 
     
    

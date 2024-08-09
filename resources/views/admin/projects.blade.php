@@ -45,11 +45,15 @@
                                         <td>{{ $i }}</td>
                                         <td>{{ $project->business_name }}</td>
                                         <td>
-                                      
-                                            @foreach ($project->assigned_users as $user)
-                                                <span>{{ $user->id }}</span>
+                                            @foreach ($project->assigned_users as $key => $user)
+                                            <span>{{ $user->user_name }}</span>
+                                            @if (!$loop->last)
+                                            , <!-- Add a comma if it's not the last user -->
+                                            @endif
                                             @endforeach
                                         </td>
+
+
                                         <td>{{ $project->client_name }}</td>
                                         <td>{{ $project->contact_no }}</td>
                                         <td>{{ $project->email_id }}</td>
@@ -58,7 +62,7 @@
                                         <td>{{ $project->packages }}</td>
                                         <td>{{ $project->remarks }}</td>
                                         <td>{{ $project->user->user_name ?? 'N/A' }}</td>
-                                        
+
                                     </tr>
                                     @php $i++; @endphp
                                     @endforeach

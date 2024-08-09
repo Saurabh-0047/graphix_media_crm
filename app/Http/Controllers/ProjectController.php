@@ -36,8 +36,8 @@ class ProjectController extends Controller
             'assigned_to'=> 'required|array',
         ]);
 
-        $servicesString = implode(', ', $request->packages);
-        $assigned_ids = implode(', ', $request->assigned_to);
+        $servicesString = implode(',', $request->packages);
+        $assigned_ids = implode(',', $request->assigned_to);
         
 
         $project = new ProjectModel();
@@ -52,7 +52,6 @@ class ProjectController extends Controller
         $project->sold_by_id = $request->sold_by_id;
         $project->assigned_to = $assigned_ids;
         
-
         $project->save();
 
         return redirect()->route('admin.add_project.post')->with('success', 'Project added successfully!');

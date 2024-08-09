@@ -26,6 +26,7 @@
                                 <thead>
                                     <tr class="text-dark">
                                         <th>S.NO</th>
+                                        <th>Details</th>
                                         <th>Business Name</th>
                                         <th>Assigned To</th>
                                         <th>Client Name</th>
@@ -36,7 +37,6 @@
                                         <th>Packages</th>
                                         <th>Sold By</th>
                                         <th>Added On</th>
-                                        <th>Details</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -44,6 +44,9 @@
                                     @foreach ($projects as $project)
                                     <tr>
                                         <td>{{ $i }}</td>
+                                        <td><a href="{{ route('admin.project_details', $project->id) }}" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-eye"></i>
+                                            </a></td>
                                         <td>{{ $project->business_name }}</td>
                                         <td>
                                             @foreach ($project->assigned_users as $key => $user)
@@ -64,9 +67,7 @@
                                         <td>{{ $project->user->user_name ?? 'N/A' }}</td>
                                         <td>{{ $project->created_at}}</td>
                                         
-                                        <td><a href="{{ route('admin.project_details', $project->id) }}" class="btn btn-primary btn-sm">
-                                                <i class="fas fa-eye"></i>
-                                            </a></td>
+                                       
 
                                     </tr>
                                     @php $i++; @endphp

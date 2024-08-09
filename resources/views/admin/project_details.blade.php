@@ -2,9 +2,8 @@
 <html>
 @include('admin.includes.head')
 <style>
+    /* Your existing CSS */
     .chat-boxx {
-        /* border: 1px solid #ddd; */
-        /* border-radius: 8px; */
         height: 580px;
         display: flex;
         flex-direction: column;
@@ -29,10 +28,8 @@
     .message {
         margin-bottom: 15px;
         display: flex;
-        /* align-items: center; */
         flex-direction: column;
         position: relative;
-        /* padding-right: 40px; */
     }
 
     .message .sender-info,
@@ -177,7 +174,6 @@
             </div>
             <section class="content">
                 <div class="row">
-
                     <div class="col-lg-8">
                         <div class="box" style="background: azure;">
                             <div class="box-header with-border">
@@ -185,16 +181,11 @@
                             </div>
                         </div>
                     </div>
-
-                    @foreach($project_messages as $message)
-
-                    @endforeach
-
                 </div>
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="box-1">
-
+                            <!-- Content for box-1 -->
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -204,7 +195,7 @@
                                     Messages
                                 </div>
 
-                                <div class="messages">
+                                <div class="messages" id="messages-container">
                                     @foreach($project_messages as $message)
                                     <div class="message {{ Auth::user()->user_id == $message->sent_by_user_id ? 'user' : 'other' }}">
                                         <div class="message-content">
@@ -217,27 +208,117 @@
                                         </div>
                                     </div>
                                     @endforeach
-                                    <div class="input-group">
+                                    
+                                </div>
+                                <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Type a message..." id="message-input">
                                         <div class="input-right-group">
-                                            <button class="btn-send">
+                                            <button class="btn-send" onclick="submit_message()">
                                                 <i class="fas fa-paper-plane"></i>
                                             </button>
                                         </div>
                                     </div>
-                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
             </section>
         </div>
     </div>
     <script>
-        function replyToMessage(sender, message) {
-            const inputField = document.getElementById('message-input');
-            inputField.value = `Replying to ${sender}: "${message}" `;
-            inputField.focus();
+        function scrollToBottom() {
+            const messagesContainer = document.getElementById('messages-container');
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
+
+
+        function submit_message() {
+        var new_message = $('#message-input').val();
+
+        if (new_message.trim() === '') {
+            alert('Please enter a message.');
+            return;
+        }
+
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: "{{ route('add_message') }}",
+            type: 'POST',
+            data: {
+                new_message: new_message,
+                user_id: '{{ Auth::user()->user_id }}',
+                project_id: '{{ $project_details->id }}'
+            },
+            success: function(result) {
+                if (result.success) {
+                    $('#message-input').val('');
+                    $('.messages').append('<div class="message user"><div class="message-content">' +
+                        '<div class="sender-info">You</div>' +
+                        new_message +
+                        '<div class="time-info">' + new Date().toLocaleTimeString() + '</div>' +
+                        '</div></div>');
+                    scrollToBottom();
+                } else {
+                    $('#message-input').val('');
+                    $('.messages').append('<div class="message user"><div class="message-content">' +
+                        '<div class="sender-info">You</div>' +
+                        new_message +
+                        '<div class="time-info">' + new Date().toLocaleTimeString() + '</div>' +
+                        '</div></div>');
+                        scrollToBottom();
+                }
+            },  error: function(xhr, status, error) {
+                console.error('AJAX error:', error);
+                alert('Failed to send message. Please check the console for more details.');
+            }
+          
+        });
+    }
+
+
+        // Call scrollToBottom function when the page loads
+        window.onload = scrollToBottom;
+
+
+        function fetchNewMessages() {
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        url: "{{ route('fetch_messages') }}", // Adjust this route to your fetchMessages route
+        type: 'GET',
+        data: {
+            project_id: '{{ $project_details->id }}'
+        },
+        success: function(messages) {
+            // Clear the existing messages
+            $('#messages-container').html('');
+            
+            // Append all messages
+            messages.forEach(function(message) {
+                var messageElement = '<div class="message ' +
+                    (message.sent_by_user_id == '{{ Auth::user()->user_id }}' ? 'user' : 'other') + '"><div class="message-content">' +
+                    '<div class="sender-info">' + 
+                    (message.sent_by_user_id == '{{ Auth::user()->user_id }}' ? 'You' : message.sender_name) + '</div>' +
+                    message.message +
+                    '<div class="time-info">' + new Date(message.created_at).toLocaleTimeString() + '</div>' +
+                    '</div></div>';
+                
+                $('#messages-container').append(messageElement);
+            });
+
+            
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX error:', error);
+            alert('Failed to fetch new messages. Please check the console for more details.');
+        }
+    });
+}
+
+setInterval(fetchNewMessages, 2000);
     </script>
     @include('admin.includes.footer')
     @include('admin.includes.js')

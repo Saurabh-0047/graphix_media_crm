@@ -12,6 +12,14 @@ class ProjectMessageModel extends Model
 
     protected $table = 'tb_project_messages';
 
+    protected $fillable = [
+        'message',
+        'sent_by_user_id',
+        'project_id',
+        'created_at',
+        'updated_at',
+    ];
+
     // Define the relationship to the UserModel
     public function user()
     {
@@ -21,12 +29,10 @@ class ProjectMessageModel extends Model
     // Custom accessor to get the sender's name from either tb_users or tb_admin
     public function getSenderNameAttribute()
     {
-        // First, attempt to get the user from tb_users using the relationship
         $user = $this->user; // Eager-loaded relationship
         if ($user) {
             return $user->user_name;
         }
-
         // Fallback to tb_admin if not found in tb_users
         $admin = DB::table('tb_admin')
             ->where('user_id', $this->sent_by_user_id)

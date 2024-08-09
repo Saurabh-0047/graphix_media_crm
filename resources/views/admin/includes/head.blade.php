@@ -5,7 +5,7 @@
     <meta name="description" content="" />
     <meta name="keywords" content="" />
     <meta name="author" content="">
-    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Admin Panel</title>
     
 	<!-- Vendors Style-->
@@ -23,4 +23,5 @@
        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
+    
   </head>

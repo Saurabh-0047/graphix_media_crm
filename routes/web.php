@@ -5,6 +5,7 @@ use App\Http\Controllers\UserDesignationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ProjectMessageController;
 
 Route::middleware(['redirect-if-authenticated'])->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -50,7 +51,10 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('admin/add_projects', [ProjectController::class, 'add_projects'])->name('admin.add_projects');
     Route::post('admin/add_projects', [ProjectController::class, 'save_project'])->name('admin.add_project.post');
     Route::get('admin/project_details/{id}', [ProjectController::class, 'project_details'])->name('admin.project_details');
-    
+
+    Route::post('add_message', [ProjectMessageController::class, 'store'])->name('add_message');
+    Route::get('/fetch-messages', [ProjectMessageController::class, 'fetchMessages'])->name('fetch_messages');
+
 });
 
     // ============  Admin Panel End  =========

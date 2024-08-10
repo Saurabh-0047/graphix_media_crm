@@ -61,6 +61,9 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::get('unread_count', [NotificationController::class, 'unreadCount'])->name('unread_count');
     Route::get('/notifications', [NotificationController::class, 'getNotifications'])->name('notifications.get');
+    Route::post('/notifications/mark-all-as-read', [NotificationController::class, 'markAllAsRead']);
+
+
 
 });
 

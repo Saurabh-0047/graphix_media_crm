@@ -105,12 +105,36 @@ function fetchNotifications() {
     });
 }
 
+function markAllNotificationsAsRead() {
+    const userId = 'gm_admin'; // Replace with dynamic user ID if necessary
+
+    $.ajax({
+        url: '/notifications/mark-all-as-read',
+        method: 'POST',
+        data: {
+            user_id: userId,
+            _token: '{{ csrf_token() }}' // Ensure CSRF token is included
+        },
+        success: function(response) {
+            if (response.status === 'success') {
+                console.log('All notifications marked as read');
+                
+            } else {
+                console.error(response.message);
+            }
+        },
+        error: function(xhr) {
+            console.error('Error marking notifications as read:', xhr.responseText);
+        }
+    });
+}
+
 
 
 function show_notifications(){
      fetchNotifications();
     $("#notificationBox").toggle();
-    //  markNotificationsAsRead();
+    markAllNotificationsAsRead();
   };
   
   </script>

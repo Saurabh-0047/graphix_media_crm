@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ProjectMessageController;
+use App\Http\Controllers\NotificationController;
 
 Route::middleware(['redirect-if-authenticated'])->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -55,7 +56,11 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::post('add_message', [ProjectMessageController::class, 'store'])->name('add_message');
     Route::get('/fetch-messages', [ProjectMessageController::class, 'fetchMessages'])->name('fetch_messages');
 
+    Route::get('unread_count', [NotificationController::class, 'unreadCount'])->name('unread_count');
+
 });
+
+
 
     // ============  Admin Panel End  =========
 

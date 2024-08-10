@@ -53,3 +53,27 @@
  }
 } 
 </script>
+
+<script>
+    
+        // Function to fetch the unread count
+        function fetchUnreadCount() {
+            $.ajax({
+              url: "{{ route('unread_count') }}",
+                method: 'GET',
+                success: function(response) {
+                    // Update the unread count in the UI
+                    $('#unreadCount').text(response.unread_count);
+                },
+                error: function() {
+                    console.error('Unable to fetch unread notifications count.');
+                }
+            });
+        }
+
+        // Call the function on page load
+        fetchUnreadCount();
+
+        setInterval(fetchUnreadCount, 2000);
+    
+</script>

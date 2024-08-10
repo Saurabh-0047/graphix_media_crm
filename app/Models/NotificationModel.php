@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class NotificationModel extends Model
 {
     use HasFactory;
-
+    
     protected $table = 'tb_notifications'; // Link the model to the 'tb_notifications' table
 
     protected $fillable = [

@@ -47,7 +47,7 @@
 								<span class="" >
 									<span ><i data-feather="bell"></i></span>
 								</span>
-								<span class="notification-badge">99+</span>
+								<span class="notification-badge"> <span id="unreadCount">0</span></span>
 							</label>
 						</li>
 

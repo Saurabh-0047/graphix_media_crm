@@ -22,4 +22,28 @@ class NotificationController extends Controller
         return response()->json(['unread_count' => $unreadCount]);
 
     }
+
+    public function getNotifications(){
+
+        $userId = Auth::user()->user_id;
+
+        // Fetch notifications from the database
+        $notifications = DB::table('tb_notifications')
+        
+            ->whereRaw('JSON_CONTAINS(unread_by, ?)', [json_encode($userId)])
+            ->orderBy('id', 'desc')
+            ->get();
+
+        // Format the notifications to be returned as JSON
+        $formattedNotifications = $notifications->map(function ($notification) {
+            return [
+                'message' => $notification->message,
+                'heading' => $notification->heading,
+                'date' => $notification->created_at,
+                 'lead_id' => route('project.details', ['id' => $notification->project_id]),
+            ];
+        });
+
+        return response()->json(['notifications' => $formattedNotifications]);
+    }
 }

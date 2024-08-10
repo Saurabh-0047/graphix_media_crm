@@ -71,9 +71,46 @@
             });
         }
 
+        
         // Call the function on page load
         fetchUnreadCount();
 
-        setInterval(fetchUnreadCount, 2000);
+        setInterval(fetchUnreadCount, 5000);
     
 </script>
+<script>
+function fetchNotifications() {
+    $.ajax({
+        url: "{{ route('notifications.get') }}",
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            var notificationBox = $("#notificationBox");
+            notificationBox.empty(); // Clear previous notifications
+
+            // Loop through each notification in the response and append it to the notification box
+            data.notifications.forEach(function(notification) {
+                var notificationHTML = '<div class="notification">';
+                notificationHTML += '<strong>' + notification.heading + '</strong>'
+                notificationHTML += '<p>' + notification.message + '</p>';
+                notificationHTML += '<p>⌚ : ' + notification.date + '</p>';
+                notificationHTML += '<a href="' + notification.lead_id + '">View Details</a>';
+                notificationHTML += '</div>';
+                notificationBox.append(notificationHTML);
+            });
+        },
+        error: function() {
+            console.error('Unable to fetch notifications.');
+        }
+    });
+}
+
+
+
+function show_notifications(){
+     fetchNotifications();
+    $("#notificationBox").toggle();
+    //  markNotificationsAsRead();
+  };
+  
+  </script>

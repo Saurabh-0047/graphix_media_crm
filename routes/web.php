@@ -52,11 +52,15 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('admin/add_projects', [ProjectController::class, 'add_projects'])->name('admin.add_projects');
     Route::post('admin/add_projects', [ProjectController::class, 'save_project'])->name('admin.add_project.post');
     Route::get('admin/project_details/{id}', [ProjectController::class, 'project_details'])->name('admin.project_details');
+    Route::get('project_details/{id}', [ProjectController::class, 'project_details'])->name('project.details');
+
+
 
     Route::post('add_message', [ProjectMessageController::class, 'store'])->name('add_message');
     Route::get('/fetch-messages', [ProjectMessageController::class, 'fetchMessages'])->name('fetch_messages');
 
     Route::get('unread_count', [NotificationController::class, 'unreadCount'])->name('unread_count');
+    Route::get('/notifications', [NotificationController::class, 'getNotifications'])->name('notifications.get');
 
 });
 

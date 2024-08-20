@@ -44,7 +44,7 @@
                                     @foreach ($projects as $project)
                                     <tr>
                                         <td>{{ $i }}</td>
-                                        <td><a href="{{ route('admin.project_details', $project->id) }}" class="btn btn-primary btn-sm">
+                                        <td><a href="{{ route('admin_project.details', $project->id) }}" class="btn btn-primary btn-sm">
                                                 <i class="fas fa-eye"></i>
                                             </a></td>
                                         <td>{{ $project->business_name }}</td>
@@ -66,9 +66,6 @@
                                         <td>{{ $project->packages }}</td>
                                         <td>{{ $project->user->user_name ?? 'N/A' }}</td>
                                         <td>{{ $project->created_at}}</td>
-                                        
-                                       
-
                                     </tr>
                                     @php $i++; @endphp
                                     @endforeach

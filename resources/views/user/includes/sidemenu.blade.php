@@ -3,20 +3,21 @@
         <div class="multinav">
             <div class="multinav-scroll" style="height: 97%;">    
                 <ul class="sidebar-menu" data-widget="tree">
-                    <li><a href="{{ url('admin/dashboard') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Dashboard</a></li>
+                    <li><a href="{{ url('user/dashboard') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Dashboard</a></li>
 
                     <li class="treeview">
                         <a href="#">
                             <i data-feather="grid"></i>
-                            <span>Useful</span>
+                            <span>Projects</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-right pull-right"></i>
                             </span>
                         </a>          
                         <ul class="treeview-menu">          
-                            <li><a href="{{ url('admin/category') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Category</a></li>
-                            <li><a href="{{ url('admin/sub_category') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Sub Category</a></li>
-                            <li><a href="{{ url('admin/table') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Table</a></li>
+                        <li><a href="{{ url('user/all_projects') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>All Projects</a></li>    
+                        <li><a href="{{ url('user/in_progress_projects') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>In Progress</a></li>
+                            <li><a href="{{ url('user/pending_projects') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Pending</a></li>
+                            <li><a href="{{ url('user/completed_projects') }}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Completed</a></li>
                         </ul>
                     </li> 
                     <li>

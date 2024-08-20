@@ -53,3 +53,88 @@
  }
 } 
 </script>
+
+<script>
+    
+        // Function to fetch the unread count
+        function fetchUnreadCount() {
+            $.ajax({
+              url: "{{ route('unread_count_user') }}",
+                method: 'GET',
+                success: function(response) {
+                    // Update the unread count in the UI
+                    $('#unreadCount').text(response.unread_count);
+                },
+                error: function() {
+                    console.error('Unable to fetch unread notifications count.');
+                }
+            });
+        }
+
+        
+        // Call the function on page load
+        fetchUnreadCount();
+
+        setInterval(fetchUnreadCount, 5000);
+    
+</script>
+<script>
+function fetchNotifications() {
+    $.ajax({
+        url: "{{ route('notifications_user') }}",
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            var notificationBox = $("#notificationBox");
+            notificationBox.empty(); // Clear previous notifications
+
+            // Loop through each notification in the response and append it to the notification box
+            data.notifications.forEach(function(notification) {
+                var notificationHTML = '<div class="notification">';
+                notificationHTML += '<strong>' + notification.heading + '</strong>'
+                notificationHTML += '<p>' + notification.message + '</p>';
+                notificationHTML += '<p>⌚ : ' + notification.date + '</p>';
+                notificationHTML += '<a href="' + notification.lead_id + '">View Details</a>';
+                notificationHTML += '</div>';
+                notificationBox.append(notificationHTML);
+            });
+        },
+        error: function() {
+            console.error('Unable to fetch notifications.');
+        }
+    });
+}
+
+function markAllNotificationsAsRead() {
+  const userId = document.querySelector('meta[name="user-id"]').getAttribute('content');
+
+    $.ajax({
+      url: '{{ route("notifications_user.mark-all-as-read") }}', // Use the correct route helper
+        method: 'POST',
+        data: {
+            user_id: userId,
+            _token: '{{ csrf_token() }}' // Ensure CSRF token is included
+        },
+        success: function(response) {
+            if (response.status === 'success') {
+                console.log('All notifications marked as read');
+                
+            } else {
+                console.error(response.message);
+            }
+        },
+        error: function(xhr) {
+            console.error('Error marking notifications as read:', xhr.responseText);
+        }
+    });
+}
+
+
+
+function show_notifications(){
+     fetchNotifications();
+    $("#notificationBox").toggle();
+    markAllNotificationsAsRead();
+  };
+  
+  </script>

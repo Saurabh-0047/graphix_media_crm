@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    @include('admin.includes.head')
+    @include('user.includes.head')
 </head>
 <body>
-    @include('admin.includes.header')
-    @include('admin.includes.sidemenu')
+    @include('user.includes.header')
+    @include('user.includes.sidemenu')
     <div class="content-wrapper">
         <div class="container-full">
             <div class="content-header">
@@ -16,12 +16,12 @@
             </div>
             <section class="content">
                 <div class="row">
-                    <!-- Your content goes here -->
+                   
                 </div>
             </section>
         </div>
     </div>
-    @include('admin.includes.footer')
-    @include('admin.includes.js')
+    @include('user.includes.footer')
+    @include('user.includes.js')
 </body>
 </html>

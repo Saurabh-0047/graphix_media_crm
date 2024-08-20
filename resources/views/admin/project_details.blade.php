@@ -185,7 +185,61 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="box-1">
-                            <!-- Content for box-1 -->
+                            
+                        <table class="table table-bordered">
+                                <tr>
+                                    <th>Business Name</th>
+                                    <td>{{ $project_details->business_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Client Name</th>
+                                    <td>{{ $project_details->client_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Contact Number</th>
+                                    <td>{{ $project_details->contact_no }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email ID</th>
+                                    <td>{{ $project_details->email_id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Address</th>
+                                    <td>{{ $project_details->address }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Website</th>
+                                    <td>{{ $project_details->website }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Packages</th>
+                                    <td>{{ $project_details->packages }}</td>
+                                </tr>
+                                <tr>
+    <th>Sold By</th>
+    <td>{{ $project_details->user->user_name ?? 'N/A' }}</td>
+</tr>
+<tr>
+    <th>Assigned To</th>
+    <td>
+        @foreach ($project_details->assigned_user_list as $user)
+            <span>{{ $user->user_name }}</span>
+            @if (!$loop->last)
+                ,
+            @endif
+        @endforeach
+    </td>
+</tr>
+                                <tr>
+                                    <th>Remarks</th>
+                                    <td>{{ $project_details->remarks }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Created At</th>
+                                    <td>{{ $project_details->created_at }}</td>
+                                </tr>
+                            </table>
+                            
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -208,16 +262,16 @@
                                         </div>
                                     </div>
                                     @endforeach
-                                    
+
                                 </div>
                                 <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Type a message..." id="message-input">
-                                        <div class="input-right-group">
-                                            <button class="btn-send" onclick="submit_message()">
-                                                <i class="fas fa-paper-plane"></i>
-                                            </button>
-                                        </div>
+                                    <input type="text" class="form-control" placeholder="Type a message..." id="message-input">
+                                    <div class="input-right-group">
+                                        <button class="btn-send" onclick="submit_message()">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
                                     </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -233,49 +287,50 @@
 
 
         function submit_message() {
-        var new_message = $('#message-input').val();
+            var new_message = $('#message-input').val();
 
-        if (new_message.trim() === '') {
-            alert('Please enter a message.');
-            return;
-        }
-
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url: "{{ route('add_message') }}",
-            type: 'POST',
-            data: {
-                new_message: new_message,
-                user_id: '{{ Auth::user()->user_id }}',
-                project_id: '{{ $project_details->id }}'
-            },
-            success: function(result) {
-                if (result.success) {
-                    $('#message-input').val('');
-                    $('.messages').append('<div class="message user"><div class="message-content">' +
-                        '<div class="sender-info">You</div>' +
-                        new_message +
-                        '<div class="time-info">' + new Date().toLocaleTimeString() + '</div>' +
-                        '</div></div>');
-                    scrollToBottom();
-                } else {
-                    $('#message-input').val('');
-                    $('.messages').append('<div class="message user"><div class="message-content">' +
-                        '<div class="sender-info">You</div>' +
-                        new_message +
-                        '<div class="time-info">' + new Date().toLocaleTimeString() + '</div>' +
-                        '</div></div>');
-                        scrollToBottom();
-                }
-            },  error: function(xhr, status, error) {
-                console.error('AJAX error:', error);
-                alert('Failed to send message. Please check the console for more details.');
+            if (new_message.trim() === '') {
+                alert('Please enter a message.');
+                return;
             }
-          
-        });
-    }
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('add_message_admin') }}",
+                type: 'POST',
+                data: {
+                    new_message: new_message,
+                    user_id: '{{ Auth::user()->user_id }}',
+                    project_id: '{{ $project_details->id }}'
+                },
+                success: function(result) {
+                    if (result.success) {
+                        $('#message-input').val('');
+                        $('.messages').append('<div class="message user"><div class="message-content">' +
+                            '<div class="sender-info">You</div>' +
+                            new_message +
+                            '<div class="time-info">' + new Date().toLocaleTimeString() + '</div>' +
+                            '</div></div>');
+                        scrollToBottom();
+                    } else {
+                        $('#message-input').val('');
+                        $('.messages').append('<div class="message user"><div class="message-content">' +
+                            '<div class="sender-info">You</div>' +
+                            new_message +
+                            '<div class="time-info">' + new Date().toLocaleTimeString() + '</div>' +
+                            '</div></div>');
+                        scrollToBottom();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX error:', error);
+                    alert('Failed to send message. Please check the console for more details.');
+                }
+
+            });
+        }
 
 
         // Call scrollToBottom function when the page loads
@@ -283,42 +338,42 @@
 
 
         function fetchNewMessages() {
-    $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        url: "{{ route('fetch_messages') }}", // Adjust this route to your fetchMessages route
-        type: 'GET',
-        data: {
-            project_id: '{{ $project_details->id }}'
-        },
-        success: function(messages) {
-            // Clear the existing messages
-            $('#messages-container').html('');
-            
-            // Append all messages
-            messages.forEach(function(message) {
-                var messageElement = '<div class="message ' +
-                    (message.sent_by_user_id == '{{ Auth::user()->user_id }}' ? 'user' : 'other') + '"><div class="message-content">' +
-                    '<div class="sender-info">' + 
-                    (message.sent_by_user_id == '{{ Auth::user()->user_id }}' ? 'You' : message.sender_name) + '</div>' +
-                    message.message +
-                    '<div class="time-info">' + new Date(message.created_at).toLocaleTimeString() + '</div>' +
-                    '</div></div>';
-                
-                $('#messages-container').append(messageElement);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('fetch_messages_admin') }}", // Adjust this route to your fetchMessages route
+                type: 'GET',
+                data: {
+                    project_id: '{{ $project_details->id }}'
+                },
+                success: function(messages) {
+                    // Clear the existing messages
+                    $('#messages-container').html('');
+
+                    // Append all messages
+                    messages.forEach(function(message) {
+                        var messageElement = '<div class="message ' +
+                            (message.sent_by_user_id == '{{ Auth::user()->user_id }}' ? 'user' : 'other') + '"><div class="message-content">' +
+                            '<div class="sender-info">' +
+                            (message.sent_by_user_id == '{{ Auth::user()->user_id }}' ? 'You' : message.sender_name) + '</div>' +
+                            message.message +
+                            '<div class="time-info">' + new Date(message.created_at).toLocaleTimeString() + '</div>' +
+                            '</div></div>';
+
+                        $('#messages-container').append(messageElement);
+                    });
+
+
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX error:', error);
+                    // alert('Failed to fetch new messages. Please check the console for more details.');
+                }
             });
-
-            
-        },
-        error: function(xhr, status, error) {
-            console.error('AJAX error:', error);
-            alert('Failed to fetch new messages. Please check the console for more details.');
         }
-    });
-}
 
-setInterval(fetchNewMessages, 2000);
+        setInterval(fetchNewMessages, 2000);
     </script>
     @include('admin.includes.footer')
     @include('admin.includes.js')

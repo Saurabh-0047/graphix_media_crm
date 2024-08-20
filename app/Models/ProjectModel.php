@@ -35,12 +35,15 @@ class ProjectModel extends Model
     }
 
     public function getAssignedUsersAttribute()
-{
-    // Convert the comma-separated string into an array
+    {
     $assignedUserIds = explode(',', $this->assigned_to);
-
-    // Fetch the users whose IDs are in the array
     return UserModel::whereIn('id', $assignedUserIds)->get();
-}
+    }
+
+    public function getAssignedUserListAttribute()
+    {
+        $assignedUserIds = explode(',', $this->assigned_to);
+        return UserModel::whereIn('id', $assignedUserIds)->get();
+    }
 
 }

@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserDesignationController;
@@ -16,11 +17,13 @@ Route::middleware(['redirect-if-authenticated'])->group(function () {
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
-    // ============  Admin Panel Start  =========
-    Route::middleware(['auth:admin', 'prevent-back-history'])->group(function () {
-    
-    Route::get('admin/dashboard', function () {return view('admin.dashboard');});
-    
+// ============  Admin Panel Start  =========
+Route::middleware(['auth:admin', 'prevent-back-history'])->group(function () {
+
+    Route::get('admin/dashboard', function () {
+        return view('admin.dashboard');
+    });
+
     // ============  User Handler =========
     Route::get('admin/users', [UserController::class, 'index'])->name('admin.users');
     Route::post('admin/users', [UserController::class, 'store'])->name('user.store');
@@ -38,7 +41,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('admin/user_designation/{id}/toggle-status', [UserDesignationController::class, 'toggleStatus'])->name('admin.user_designation.toggleStatus');
     // ============  Designations Handler Ends =========
 
-    
+
     // ============  Services Handler =========
     Route::get('admin/project_services', [ServiceController::class, 'index'])->name('admin.project_services');
     Route::post('admin/project_services', [ServiceController::class, 'submit_data'])->name('admin.project_services.post');
@@ -51,31 +54,57 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('admin/projects', [ProjectController::class, 'index'])->name('admin.projects');
     Route::get('admin/add_projects', [ProjectController::class, 'add_projects'])->name('admin.add_projects');
     Route::post('admin/add_projects', [ProjectController::class, 'save_project'])->name('admin.add_project.post');
-    Route::get('admin/project_details/{id}', [ProjectController::class, 'project_details'])->name('admin.project_details');
-    Route::get('project_details/{id}', [ProjectController::class, 'project_details'])->name('project.details');
+    Route::get('admin/project_details/{id}', [ProjectController::class, 'project_details'])->name('admin_project.details');
+    // ============  Projects Handler End========= 
 
 
 
-    Route::post('add_message', [ProjectMessageController::class, 'store'])->name('add_message');
-    Route::get('/fetch-messages', [ProjectMessageController::class, 'fetchMessages'])->name('fetch_messages');
-
-    Route::get('unread_count', [NotificationController::class, 'unreadCount'])->name('unread_count');
-    Route::get('/notifications', [NotificationController::class, 'getNotifications'])->name('notifications.get');
-    Route::post('/notifications/mark-all-as-read', [NotificationController::class, 'markAllAsRead']);
-
+    // ============  Message and Notifications Handler ========= 
+    Route::post('add_message_admin', [ProjectMessageController::class, 'store'])->name('add_message_admin');
+    Route::get('fetch_messages_admin', [ProjectMessageController::class, 'fetchMessages'])->name('fetch_messages_admin');
+    Route::get('unread_count_admin', [NotificationController::class, 'unreadCount'])->name('unread_count_admin');
+    Route::get('notifications_admin', [NotificationController::class, 'getNotifications'])->name('notifications_admin');
+    Route::post('notifications_admin/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('notifications_admin.mark-all-as-read');
+    // ============  Message and Notifications Handler Ends========= 
 
 
 });
 
+// ============  Admin Panel End  =========
 
 
-    // ============  Admin Panel End  =========
-
+// ============  User Panel Start  =========
 Route::middleware(['auth:user', 'prevent-back-history'])->group(function () {
     Route::get('user/dashboard', function () {
         return view('user.dashboard');
     });
+
+
+     // ============  Projects Handler ========= 
+     Route::get('user/all_projects', [ProjectController::class, 'user_all_projects'])->name('user.all_projects');
+     Route::get('user/project_details/{id}', [ProjectController::class, 'user_project_details'])->name('user.project_details');
+     // ============  Projects Handler End========= 
+ 
+
+    // ============  Message and Notifications Handler ========= 
+    Route::post('add_message_user', [ProjectMessageController::class, 'user_store'])->name('add_message_user');
+    Route::get('fetch_messages_user', [ProjectMessageController::class, 'fetchMessages'])->name('fetch_messages_user');
+    Route::get('unread_count_user', [NotificationController::class, 'unreadCount_user'])->name('unread_count_user');
+    Route::get('notifications_user', [NotificationController::class, 'getNotifications_user'])->name('notifications_user');
+    Route::post('notifications_user/mark-all-as-read', [NotificationController::class, 'markAllAsRead_user'])->name('notifications_user.mark-all-as-read');
+    // ============  Message and Notifications Handler Ends========= 
+
+
 });
+
+
+
+
+
+
+
+
+// ============  User Panel End  =========
 
 Route::get('/', function () {
     return view('welcome');

@@ -58,18 +58,18 @@
     
         // Function to fetch the unread count
         function fetchUnreadCount() {
-            $.ajax({
-              url: "{{ route('unread_count') }}",
-                method: 'GET',
-                success: function(response) {
-                    // Update the unread count in the UI
-                    $('#unreadCount').text(response.unread_count);
-                },
-                error: function() {
-                    console.error('Unable to fetch unread notifications count.');
-                }
-            });
+    $.ajax({
+        url: "{{ route('unread_count_admin') }}", // Corrected route
+        method: 'GET',
+        success: function(response) {
+            $('#unreadCount').text(response.unread_count);
+        },
+        error: function() {
+            console.error('Unable to fetch unread notifications count.');
         }
+    });
+}
+
 
         
         // Call the function on page load
@@ -81,10 +81,12 @@
 <script>
 function fetchNotifications() {
     $.ajax({
-        url: "{{ route('notifications.get') }}",
+        url: "{{ route('notifications_admin') }}",
         type: 'GET',
         dataType: 'json',
         success: function(data) {
+
+          console.log(data);
             var notificationBox = $("#notificationBox");
             notificationBox.empty(); // Clear previous notifications
 
@@ -94,7 +96,7 @@ function fetchNotifications() {
                 notificationHTML += '<strong>' + notification.heading + '</strong>'
                 notificationHTML += '<p>' + notification.message + '</p>';
                 notificationHTML += '<p>⌚ : ' + notification.date + '</p>';
-                notificationHTML += '<a href="' + notification.lead_id + '">View Details</a>';
+                notificationHTML += '<a href="'+ notification.lead_id + '">View Details</a>';
                 notificationHTML += '</div>';
                 notificationBox.append(notificationHTML);
             });
@@ -106,10 +108,10 @@ function fetchNotifications() {
 }
 
 function markAllNotificationsAsRead() {
-    const userId = 'gm_admin'; // Replace with dynamic user ID if necessary
+    const userId = document.querySelector('meta[name="user-id"]').getAttribute('content');
 
     $.ajax({
-        url: '/notifications/mark-all-as-read',
+        url: '{{ route("notifications_admin.mark-all-as-read") }}', // Use the correct route helper
         method: 'POST',
         data: {
             user_id: userId,
@@ -118,7 +120,6 @@ function markAllNotificationsAsRead() {
         success: function(response) {
             if (response.status === 'success') {
                 console.log('All notifications marked as read');
-                
             } else {
                 console.error(response.message);
             }
@@ -128,6 +129,7 @@ function markAllNotificationsAsRead() {
         }
     });
 }
+
 
 
 

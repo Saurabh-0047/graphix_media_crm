@@ -44,7 +44,9 @@
 	<div class="wrapper">
 		<header class="main-header">
 			<div class="d-flex align-items-center logo-box justify-content-start">
-				<a href="{{ url('admin/dashboard') }}" class="logo"></a>
+				<a href="{{ url('admin/dashboard') }}" class="logo">
+					<img src="{{ asset('/images/logo.png') }}">
+				</a>
 			</div>
 			<nav class="navbar navbar-static-top">
 				<div class="app-menu">

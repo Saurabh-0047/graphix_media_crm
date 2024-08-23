@@ -76,6 +76,33 @@
                                         </div>
                                     </div>
                                     <hr>
+                                    <div class="col-lg-12" id="modules-section">
+                                        <div class="form-group">
+                                            <label class="form-label">Modules</label>
+                                            <div id="modules-container">
+                                                <!-- Existing modules will be appended here -->
+                                                @if(old('modules'))
+                                                    @foreach(old('modules') as $index => $module)
+                                                        <div class="module-item" id="module_{{ $index }}">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Module Heading</label>
+                                                                <input type="text" class="form-control" name="modules[{{ $index }}][heading]" value="{{ $module['heading'] }}" placeholder="Module Heading...">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Module Description</label>
+                                                                <textarea class="form-control" name="modules[{{ $index }}][description]" placeholder="Module Description...">{{ $module['description'] }}</textarea>
+                                                            </div>
+                                                            <button type="button" class="btn btn-danger remove-module" data-module-id="{{ $index }}">Remove Module</button>
+                                                        </div>
+                                                        <hr>
+                                                    @endforeach
+                                                @endif
+                                            </div>
+                                            <button type="button" class="btn btn-primary" id="add-module">Add Module</button>
+                                        </div>
+                                    </div>
+                                    
+    <hr>                                                                        
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="form-label">Contact Number</label>
@@ -173,6 +200,36 @@
     </div>
     @include('admin.includes.footer')
     @include('admin.includes.js')
+    <script>
+        $(document).ready(function() {
+            let moduleIndex = $('.module-item').length > 0 ? $('.module-item').length : 0;
+    
+            $('#add-module').click(function() {
+                moduleIndex++;
+                const moduleHtml = `
+                    <div class="module-item" id="module_${moduleIndex}">
+                        <div class="form-group">
+                            <label class="form-label">Module Heading</label>
+                            <input type="text" class="form-control" name="modules[${moduleIndex}][heading]" placeholder="Module Heading...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Module Description</label>
+                            <textarea class="form-control" name="modules[${moduleIndex}][description]" placeholder="Module Description..."></textarea>
+                        </div>
+                        <button type="button" class="btn btn-danger remove-module" data-module-id="${moduleIndex}">Remove Module</button>
+                    </div>
+                    <hr>
+                `;
+                $('#modules-container').append(moduleHtml);
+            });
+    
+            $('#modules-container').on('click', '.remove-module', function() {
+                const moduleId = $(this).data('module-id');
+                $(`#module_${moduleId}`).remove();
+            });
+        });
+    </script>
+    
 </body>
 
 </html>

@@ -8,6 +8,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ProjectMessageController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ModuleController;
 
 Route::middleware(['redirect-if-authenticated'])->group(function () {
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -93,6 +94,10 @@ Route::middleware(['auth:user', 'prevent-back-history'])->group(function () {
     Route::get('notifications_user', [NotificationController::class, 'getNotifications_user'])->name('notifications_user');
     Route::post('notifications_user/mark-all-as-read', [NotificationController::class, 'markAllAsRead_user'])->name('notifications_user.mark-all-as-read');
     // ============  Message and Notifications Handler Ends========= 
+
+    //Modules
+    Route::post('/modules/accept/{id}', [ModuleController::class, 'accept'])->name('modules.accept');
+    Route::post('/modules/{id}/complete', [ModuleController::class, 'complete'])->name('modules.complete');
 
 
 });

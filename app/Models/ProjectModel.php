@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\UserModel;
+use App\Models\ModuleModel;
 
 class ProjectModel extends Model
 {
@@ -44,6 +45,11 @@ class ProjectModel extends Model
     {
         $assignedUserIds = explode(',', $this->assigned_to);
         return UserModel::whereIn('id', $assignedUserIds)->get();
+    }
+
+    public function modules()
+    {
+        return $this->hasMany(ModuleModel::class, 'project_id');
     }
 
 }

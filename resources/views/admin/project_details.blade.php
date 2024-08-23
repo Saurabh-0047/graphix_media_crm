@@ -177,7 +177,8 @@
                     <div class="col-lg-8">
                         <div class="box" style="background: azure;">
                             <div class="box-header with-border">
-                                <h4 class="box-title">Details Of Project Of <strong> {{$project_details->business_name}}</strong></h4>
+                                <h4 class="box-title">Details Of Project Of <strong>
+                                        {{ $project_details->business_name }}</strong></h4>
                             </div>
                         </div>
                     </div>
@@ -185,8 +186,8 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="box-1">
-                            
-                        <table class="table table-bordered">
+
+                            <table class="table table-bordered">
                                 <tr>
                                     <th>Business Name</th>
                                     <td>{{ $project_details->business_name }}</td>
@@ -216,20 +217,20 @@
                                     <td>{{ $project_details->packages }}</td>
                                 </tr>
                                 <tr>
-    <th>Sold By</th>
-    <td>{{ $project_details->user->user_name ?? 'N/A' }}</td>
-</tr>
-<tr>
-    <th>Assigned To</th>
-    <td>
-        @foreach ($project_details->assigned_user_list as $user)
-            <span>{{ $user->user_name }}</span>
-            @if (!$loop->last)
-                ,
-            @endif
-        @endforeach
-    </td>
-</tr>
+                                    <th>Sold By</th>
+                                    <td>{{ $project_details->user->user_name ?? 'N/A' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Assigned To</th>
+                                    <td>
+                                        @foreach ($project_details->assigned_user_list as $user)
+                                            <span>{{ $user->user_name }}</span>
+                                            @if (!$loop->last)
+                                                ,
+                                            @endif
+                                        @endforeach
+                                    </td>
+                                </tr>
                                 <tr>
                                     <th>Remarks</th>
                                     <td>{{ $project_details->remarks }}</td>
@@ -239,7 +240,7 @@
                                     <td>{{ $project_details->created_at }}</td>
                                 </tr>
                             </table>
-                            
+
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -250,22 +251,25 @@
                                 </div>
 
                                 <div class="messages" id="messages-container">
-                                    @foreach($project_messages as $message)
-                                    <div class="message {{ Auth::user()->user_id == $message->sent_by_user_id ? 'user' : 'other' }}">
-                                        <div class="message-content">
-                                            <div class="sender-info">
-                                                <!-- Safely display sender's name -->
-                                                {{ $message->sent_by_user_id == Auth::user()->user_id ? 'You' : $message->sender_name }}
+                                    @foreach ($project_messages as $message)
+                                        <div
+                                            class="message {{ Auth::user()->user_id == $message->sent_by_user_id ? 'user' : 'other' }}">
+                                            <div class="message-content">
+                                                <div class="sender-info">
+                                                    <!-- Safely display sender's name -->
+                                                    {{ $message->sent_by_user_id == Auth::user()->user_id ? 'You' : $message->sender_name }}
+                                                </div>
+                                                {{ $message->message }}
+                                                <div class="time-info">{{ $message->created_at->format('H:i A') }}
+                                                </div>
                                             </div>
-                                            {{ $message->message }}
-                                            <div class="time-info">{{ $message->created_at->format('H:i A') }}</div>
                                         </div>
-                                    </div>
                                     @endforeach
 
                                 </div>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Type a message..." id="message-input">
+                                    <input type="text" class="form-control" placeholder="Type a message..."
+                                        id="message-input">
                                     <div class="input-right-group">
                                         <button class="btn-send" onclick="submit_message()">
                                             <i class="fas fa-paper-plane"></i>
@@ -273,6 +277,52 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="box" style="background: azure;">
+                            <div class="box-header with-border">
+                                <h4 class="box-title">Modules Of <strong>
+                                        {{ $project_details->business_name }}</strong></h4>
+                            </div>
+                            @if ($project_details->modules->isNotEmpty())
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Heading</th>
+                                            <th>Description</th>
+                                            <th>Status</th>
+                                            <th>User Name</th> <!-- New column for User Name -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($project_details->modules as $module)
+                                            @php
+                                                // Determine the background color based on module status
+                                                $backgroundColor =
+                                                    $module->module_status == 'Pending'
+                                                        ? 'yellow'
+                                                        : ($module->module_status == 'Accepted'
+                                                            ? 'lightblue'
+                                                            : ($module->module_status == 'Completed'
+                                                                ? 'lightgreen'
+                                                                : 'white'));
+                                            @endphp
+                                            <tr style="background-color: {{ $backgroundColor }};">
+                                                <td>{{ $module->module_heading }}</td>
+                                                <td>{{ $module->module_description }}</td>
+                                                <td>{{ $module->module_status }}</td>
+                                                <td>{{ $module->user ? $module->user->user_name : 'N/A' }}</td>
+                                                <!-- Display User Name or 'N/A' -->
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @else
+                                <p>No modules found for this project.</p>
+                            @endif
+
+
                         </div>
                     </div>
                 </div>
@@ -354,11 +404,14 @@
                     // Append all messages
                     messages.forEach(function(message) {
                         var messageElement = '<div class="message ' +
-                            (message.sent_by_user_id == '{{ Auth::user()->user_id }}' ? 'user' : 'other') + '"><div class="message-content">' +
+                            (message.sent_by_user_id == '{{ Auth::user()->user_id }}' ? 'user' :
+                                'other') + '"><div class="message-content">' +
                             '<div class="sender-info">' +
-                            (message.sent_by_user_id == '{{ Auth::user()->user_id }}' ? 'You' : message.sender_name) + '</div>' +
+                            (message.sent_by_user_id == '{{ Auth::user()->user_id }}' ? 'You' : message
+                                .sender_name) + '</div>' +
                             message.message +
-                            '<div class="time-info">' + new Date(message.created_at).toLocaleTimeString() + '</div>' +
+                            '<div class="time-info">' + new Date(message.created_at)
+                            .toLocaleTimeString() + '</div>' +
                             '</div></div>';
 
                         $('#messages-container').append(messageElement);
